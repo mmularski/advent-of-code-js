@@ -1,0 +1,8 @@
+{
+  "eslint.useESLintClass": true,
+  "eslint.useFlatConfig": true,
+  "eslint.lintTask.enable": true,
+  "eslint.format.enable": true,
+  "eslint.trace.server": "off",
+  "eslint.enable": true,
+}
