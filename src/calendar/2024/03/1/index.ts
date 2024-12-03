@@ -2,7 +2,7 @@ import { createReadStream } from 'node:fs';
 import path from 'node:path';
 import readline from 'node:readline/promises';
 
-async function exec(fileName: string): Promise<number> {
+export async function exec(fileName: string): Promise<number> {
   let sum = 0;
 
   const filePath = path.join(__dirname, fileName);
@@ -14,9 +14,10 @@ async function exec(fileName: string): Promise<number> {
   });
 
   for await (const line of rl) {
-    const matches = line.matchAll(/mul\((\d{1,3})\,(\d{1,3})\)/g);
+    const matches = line.matchAll(/mul\((\d{1,3}),(\d{1,3})\)/g);
 
     Array.from(matches).map((matchRegexp) => {
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
       const [_, leftNumber, rightNumber] = matchRegexp;
 
       sum += Number(leftNumber) * Number(rightNumber);
@@ -25,5 +26,3 @@ async function exec(fileName: string): Promise<number> {
 
   return sum;
 };
-
-exec(process.argv.at(2) ?? '').then(console.log);

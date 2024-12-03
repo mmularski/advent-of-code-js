@@ -2,7 +2,7 @@ import { createReadStream } from 'node:fs';
 import path from 'node:path';
 import readline from 'node:readline/promises';
 
-async function exec(fileName: string): Promise<number> {
+export async function exec(fileName: string): Promise<number> {
   let sum = 0;
 
   const filePath = path.join(__dirname, fileName);
@@ -31,5 +31,3 @@ async function exec(fileName: string): Promise<number> {
 
   return sum;
 };
-
-exec(process.argv.at(2) ?? '').then(console.log);
