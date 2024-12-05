@@ -1,6 +1,6 @@
 import { readFile } from 'node:fs/promises';
 import path from 'node:path';
-import { logger } from '../../../../common';
+import { logger } from '../../../common';
 import * as R from 'ramda';
 
 const PATTERN = 'XMAS';

@@ -10,22 +10,32 @@ interface Options {
   all: boolean
   year?: string
   day?: string
-  star?: string
 }
 
-const executeExercise = async (year: string, day: string, star: string, input: string) => {
-  const exercisePath = path.join(__dirname, '../src/calendar', year, day, star);
-  const fullFilePath = path.join(exercisePath, 'index.ts')
+const executeExercise = async (year: string, day: string, input: string) => {
+  const exercisePath = path.join(__dirname, '../src/calendar', year, day);
+  const inputPath = path.join(exercisePath, input);
 
-  if (!existsSync(fullFilePath)) {
-    logger().warn(chalk.yellowBright(`Exercise missing: ${year}/${day}/${star}. Skipping...`));
+  if(!existsSync(inputPath)){
+    logger().warn(chalk.yellowBright(`Input file missing: ${inputPath}. Skipping...`));
+
     return;
   }
 
-  const file = await import(path.join(exercisePath, 'index.ts')) as { exec: (inputFile: string) => Promise<number> };
-  const result = await file.exec(input);
+  const filePaths = [path.join(exercisePath, 'starOne.ts'), path.join(exercisePath, 'starTwo.ts')]
 
-  printAnswer(exercisePath, input, result);
+  filePaths.map(async (filePath, index) => {
+    if (!existsSync(filePath)) {
+      logger().warn(chalk.yellowBright(`Exercise missing: ${year}/${day} star ${index + 1}. Skipping...`));
+
+      return;
+    }
+
+    const file = await import(filePath) as { exec: (inputFile: string) => Promise<number> };
+    const result = await file.exec(input);
+
+    printAnswer(filePath, input, result);
+  });
 };
 
 const executeAllExercises = async () => {
@@ -34,14 +44,10 @@ const executeAllExercises = async () => {
     num => num.toString().padStart(2, '0'),
     R.range(1, 25)
   );
-  const stars = ['1', '2'];
 
   const tasks = R.chain(
-    year => R.chain(
-      day => R.map(
-        star => ({ year, day, star }),
-        stars
-      ),
+    year => R.map(
+      day => ({ year, day }),
       days
     ),
     availableYears
@@ -51,7 +57,7 @@ const executeAllExercises = async () => {
 
   for (const batch of batches) {
     await Promise.all(
-      R.map((task) => executeExercise(task.year, task.day, task.star, 'example.txt'), batch)
+      R.map((task) => executeExercise(task.year, task.day, 'example.txt'), batch)
     );
   }
 }
@@ -62,21 +68,17 @@ program.command('calendar')
   .option('-a, --all', 'Run all exercises')
   .option('-y, --year <number>', 'Year')
   .option('-d, --day <number>', 'Day [01-24]')
-  .option('-s, --star <number>', 'Star [1-2]')
   .action(async (args: Options) => {
-    const { all, year, day, star } = args;
+    const { all, year, day } = args;
 
     if (all) {
       await executeAllExercises();
     }
 
-    if(year && day && star) {
-      await executeExercise(year, day, star, 'input.txt')
+    if (year && day) {
+
+      await executeExercise(year, day, 'input.txt')
     }
-
-    //ToDo
-
-    //await executeExercise('2024', '01', '1', 'example.txt');
   });
 
 program.parse();
