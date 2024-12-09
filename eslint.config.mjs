@@ -8,7 +8,7 @@ import jestPlugin from 'eslint-plugin-jest';
 /** @type {import('eslint').Linter.Config[]} */
 export default tseslint.config([
   {
-    files: ['{src}/**/*.{js,mjs,cjs,ts}'],
+    files: ['src/**/*.{js,mjs,cjs,ts}'],
     ignores: ['**/.history/**'],
     extends: [js.configs.recommended, tseslint.configs.recommendedTypeChecked],
     plugins: {
@@ -33,6 +33,15 @@ export default tseslint.config([
       },
     },
     rules: {
+      'no-unused-vars': [
+        'error',
+        {
+          vars: 'all',
+          ignoreRestSiblings: true,
+          varsIgnorePattern: '^_',
+          argsIgnorePattern: '^_',
+        },
+      ],
       quotes: ['error', 'single'],
       'unicorn/prefer-node-protocol': 'error',
     },

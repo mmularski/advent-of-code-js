@@ -3,13 +3,13 @@ import { exec as starOne } from './starOne';
 import { exec as starTwo } from './starTwo';
 import { readFileSync } from 'node:fs';
 
-describe('Unit: 2024 | Day - 03', () => {
+describe('Unit: 2024 | Day - 07', () => {
   test('Star 1 passes global example', async () => {
     const expectedAnswer = Number(readFileSync(
       path.join(__dirname, 'answer-1.txt'),
       'utf-8'
     ));
-    const result = await starOne('example-1.txt');
+    const result = await starOne('example.txt');
 
     expect(result).toEqual(expectedAnswer);
   });
@@ -19,7 +19,7 @@ describe('Unit: 2024 | Day - 03', () => {
       path.join(__dirname, 'answer-2.txt'),
       'utf-8'
     ));
-    const result = await starTwo('example-2.txt');
+    const result = await starTwo('example.txt');
 
     expect(result).toEqual(expectedAnswer);
   });
