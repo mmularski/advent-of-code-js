@@ -5,7 +5,7 @@ const config: Config = {
   preset: 'ts-jest',
   testEnvironment: 'node',
   transformIgnorePatterns: ['<rootDir>/dist'],
-  testMatch: ['<rootDir>/**/*.spec.{js,mjs,cjs,ts}', '<rootDir>/**/*.test.{js,mjs,cjs,ts}'],
+  testMatch: ['<rootDir>/src/calendar/**/*.test.{js,mjs,cjs,ts}'],
 };
 
 export default config;

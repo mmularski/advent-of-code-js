@@ -2,7 +2,7 @@ import pino, { Logger } from 'pino';
 
 let loggerInstance: Logger;
 
-export const logger = () => {
+export const logger = (opts = { sync: false }) => {
   if (loggerInstance) {
     return loggerInstance
   }
@@ -12,7 +12,8 @@ export const logger = () => {
     transport: {
       target: 'pino-pretty',
       options: {
-        colorize: true
+        colorize: true,
+        sync: opts.sync
       }
     }
   })
